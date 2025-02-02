@@ -1,5 +1,5 @@
 import { useState, useReducer} from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
