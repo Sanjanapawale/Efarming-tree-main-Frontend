@@ -6,10 +6,17 @@ import { useSelector } from 'react-redux';
 import Registration from './Components/Registration';
 import Login from './Components/Login';
 import AdminHome from './Components/AdminHome';
-import FarmerHome from './Components/FarmerHome';
 import CustomerHome from './Components/CustomerHome';
 import Logout from './Components/Logout';
 import ProductDetails from './Components/ProductDetails';
+import ChangePassword from './Routes/Farmer/ChangePassword';
+import Profile from './Routes/Farmer/Profile';
+import Product from './Routes/Farmer/Product';
+import ProductDetail from './Routes/Farmer/ProductDetail';
+import AProfile from './Routes/Admin/AProfile';
+import AChangePassword from './Routes/Admin/AChangePassword';
+import AddProductForm from './Routes/Farmer/AddProductForm';
+
 
 function App() {
   const mystate = useSelector((state) => state.logged);
@@ -44,10 +51,16 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Registration />} />
         <Route path="admin_home" element={<AdminHome />} />
-        <Route path="farmer_home" element={<FarmerHome />} />
         <Route path="customer_home" element={<CustomerHome />} />
         <Route path="logout" element={<Logout />} />
         <Route path="/products/:id/details" element={<ProductDetails />} />
+        <Route path='password' element={<ChangePassword/>}></Route>
+        <Route path='profile' element={<Profile/>}></Route>
+        <Route path='product' element={<Product/>}></Route>
+        <Route path='productdetail' element={<ProductDetail/>}></Route>
+        <Route path='aprofile' element={<AProfile/>}></Route>
+        <Route path='apassword' element={<AChangePassword/>}></Route>
+        <Route path='addproduct' element={<AddProductForm/>}></Route>
       </Routes>
     </div>
   );

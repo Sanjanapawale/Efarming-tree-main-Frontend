@@ -1,93 +1,57 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
-export default function ProductDeatils() {
-  const [product, setProduct] = useState({
-    product_name: '',
-    category: '',
-    available_quantity: '',
-    price_per_unit: '',
-  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setProduct({
-      ...product,
-      [name]: value,
-    });
-  };
+const ProductDetails = () => {
+  const [products, setProducts] = useState([]);
+  const userId = localStorage.getItem("userId") || 2; // Replace with dynamic user ID
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Logic to save the product
-    // For example, sending the data to an API or storing in the state
-    console.log("Product Data Submitted: ", product);
-    // Reset the form after submission if needed
-    setProduct({
-      product_name: '',
-      category: '',
-      available_quantity: '',
-      price_per_unit: '',
-    });
-  };
+  useEffect(() => {
+    fetch(`http://localhost:8023/products/allProducts?uid=${userId}`)
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, [userId]);
 
+  let navigate = useNavigate();
+  
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Add/Update Product Details</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group mb-3">
-          <label htmlFor="product_name">Product Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="product_name"
-            name="product_name"
-            value={product.product_name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group mb-3">
-          <label htmlFor="category">Category</label>
-          <input
-            type="text"
-            className="form-control"
-            id="category"
-            name="category"
-            value={product.category}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group mb-3">
-          <label htmlFor="available_quantity">Available Quantity</label>
-          <input
-            type="number"
-            className="form-control"
-            id="available_quantity"
-            name="available_quantity"
-            value={product.available_quantity}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className="form-group mb-3">
-          <label htmlFor="price_per_unit">Price per Unit (Rs)</label>
-          <input
-            type="number"
-            className="form-control"
-            id="price_per_unit"
-            name="price_per_unit"
-            value={product.price_per_unit}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-primary mt-3 w-100">Save</button>
-      </form>
+    <div>
+    <table className="table table-bordered table-striped table-hover">
+      <thead className="thead-dark">
+        <tr>
+          <th>Sr.No</th>
+          <th>Product Name</th>
+          <th>Product Type</th>
+          <th>Available Quantity</th>
+          <th>Price</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {products.length > 0 ? (
+          products.map((product, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{product.productName}</td>
+              <td>{product.productTypeName}</td>
+              <td>{product.quantity}</td>
+              <td>{product.price} Rs</td>
+              <td><button className="btn btn-warning">Update</button></td>
+                <td><button className="btn btn-danger">Delete</button></td>
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan="5">No products available</td>
+          </tr>
+        )}
+      </tbody>
+    </table>
+    <button type='button' className='btn btn-primary mt-3 w-30' onClick={() => navigate(`/addproduct`)}>Add Product</button>
     </div>
   );
-}
+};
+
+export default ProductDetails;

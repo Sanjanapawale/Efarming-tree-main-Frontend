@@ -50,12 +50,35 @@ export default function Login() {
             navigate('/'); // Redirect to home page on request rejection
             return; // Exit early if request not approved
           }
-    
+
+        const userId = data.uid;  // Assuming 'uid' is the key for user ID
+        const userName = data.uname;
+        // const userFname = data.fname;
+        // const userLname = data.lname;
+        // const userEmail = data.email;
+        // const userAddress = data.address;
+        // const userCity = data.cid;
+        // const userContact = data.contact;
+        // const userAdhar = data.adhaar;
+        // console.log("User ID:", userId);
+        localStorage.setItem("userId", userId);  // Store in localStorage
+        localStorage.setItem("userName", userName);
+        // localStorage.setItem("userFname", userFname);
+        // localStorage.setItem("userLname", userLname);
+        // localStorage.setItem("userEmail", userEmail);
+        // localStorage.setItem("userAddress", userAddress);
+        // localStorage.setItem("userCity", userCity);
+        // localStorage.setItem("userContact", userContact);
+        // localStorage.setItem("userAdhar", userAdhar);
+        // Dispatch user info to Redux if needed
+        reduxAction({ type: "LOGIN_SUCCESS", payload: {userName, userId, role: data.role.rid } });
+        // userId, userName, userLname, userEmail, userAddress, userCity, userContact, userAdhar, 
+
           // Handle successful login based on role_id
           if (data.role.rid === 1) {
-            navigate("admin_home");
+            navigate("aprofile");
           } else if (data.role.rid === 2) {
-            navigate("farmer_home");
+            navigate("profile");
           } else if (data.role.rid === 3) {
             navigate("customer_home");
           } else {
@@ -85,6 +108,7 @@ export default function Login() {
                     <h2>Login Page</h2>
                 </div>
                 <div className="card-body p-5">
+                {/* {userName && <h3 className="text-center">Welcome, {userName}!</h3>} */}
                 <form>
                 <div className='mb-3'>
                     <label htmlFor='username' className='form-label'></label>
@@ -102,7 +126,7 @@ export default function Login() {
                     <button type='button' className='btn btn-primary mb-3 w-100' onClick={(e)=>sendData(e)}>Login</button>
                 </div>
                 <div className="text-center mt-4"> 
-                    <a href="/register">Forgot Password?</a>
+                    <a href="/admin_home">Forgot Password?</a>
                 </div>
                 <div className="text-center mt-4">
                     <p>Don't have an Account ? 
